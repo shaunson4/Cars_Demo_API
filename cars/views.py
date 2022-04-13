@@ -20,7 +20,7 @@ def cars_list(request):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET', 'PUT'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def cars_detail(request, pk):
     car = get_object_or_404(Car, pk=pk)
     if request.method == 'GET':
@@ -31,4 +31,7 @@ def cars_detail(request, pk):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+    elif request.method == 'DELETE':
+        car.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
         
